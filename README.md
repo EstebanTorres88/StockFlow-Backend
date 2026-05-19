@@ -119,7 +119,7 @@ El archivo `docker/docker-compose.yaml` levanta un contenedor MySQL:
 
 **En Windows**
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 
@@ -147,7 +147,7 @@ podman ps
 
 **En Windows**
 ```bash
-docker-compose stop
+docker compose stop
 ```
 
 **En Linux**
@@ -161,7 +161,7 @@ podman-compose stop
 
 **En Windows**
 ```bash
-docker-compose start
+docker compose start
 ```
 **En Linux**
 ```bash
