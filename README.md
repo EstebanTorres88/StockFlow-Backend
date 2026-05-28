@@ -16,8 +16,6 @@ StockFlow-Backend/
 ├── .gitignore
 ├── .mvn/
 │   └── wrapper/
-├── docker/
-│   └── docker-compose.yaml
 ├── mvnw
 ├── mvnw.cmd
 ├── pom.xml
@@ -99,8 +97,6 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 
 
 El archivo **application-local.properties** es necesario para que la aplicación Spring Boot se conecte a la base de datos
-
-
 
 ### Docker y base de datos
 
