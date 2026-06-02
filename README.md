@@ -87,80 +87,27 @@ El archivo `src/main/resources/application-local.properties` no está registrado
 
 Crea el archivo con este contenido exacto:
 
+<details>
+<summary>👁 Mostrar credenciales</summary>
+
+```text
+Usuario: avnadmin
+Contraseña: AVNS_-W1QARfvQtuOHJALpct
+
+
 ```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/stockFlow
-spring.datasource.username=stockFlow
-spring.datasource.password=stockFlow88
+spring.datasource.url= jdbc:mysql://stockflow88-stockflow88.h.aivencloud.com:17879/stockflow?ssl-mode=REQUIRED
+spring.datasource.username=avnadmin
+spring.datasource.password=AVNS_-W1QARfvQtuOHJALpct
 
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 ```
 
 
 El archivo **application-local.properties** es necesario para que la aplicación Spring Boot se conecte a la base de datos
+</details>
 
-### Docker y base de datos
+### Conexión en Dbeaver
+<img width="1220" height="640" alt="image" src="https://github.com/user-attachments/assets/503b7859-605a-4aa0-ac3b-7866b957bbca" />
 
->**⚠️IMPORTANTE: Todos los comandos deben ejecutarse desde la dirección`StockFlow-Backend/docker`** 
-
-El archivo `docker/docker-compose.yaml` levanta un contenedor MySQL:
-
-- Nombre del contenedor: `stockflow-db`
-- Puerto expuesto: `3306`
-- Base de datos: `stockFlow`
-- Usuario: `stockFlow`
-- Contraseña: `stockFlow88`
-
-### Levantar el contenedor
-
-
-**En Windows**
-```bash
-docker compose up -d
-```
-
-
-**En Linux**
-```bash
-podman-compose up -d
-```
-
-> En caso de fallar en linux utilizar : podman-compose -f docker-compose.yaml up -d
-
-### Verificar que se haya activado el contenedor correctamente
-
-**En Windows**
-```bash
-docker ps
-```
-
-**En Linux**
-```bash
-podman ps
-```
->El contenedor debe aparecer en la lista y estar en estado `Up`.
-
-### Detener servicios del contenedor (Útil para detener el contenedor cuando terminas de trabajar)
-
-**En Windows**
-```bash
-docker compose stop
-```
-
-**En Linux**
-```bash
-podman-compose stop
-```
-
-
-
-### Iniciar servicios del contenedor (Útil para iniciar el contenedor sin crearlo de nuevo)
-
-**En Windows**
-```bash
-docker compose start
-```
-**En Linux**
-```bash
-podman-compose start
-```
 
