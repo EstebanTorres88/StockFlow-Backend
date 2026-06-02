@@ -55,6 +55,6 @@ public class Product {
   @OneToOne(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private Stock stock;
 
-
+  @Column(name = "image_url", length = 500)
   private String imageURL;
 }
