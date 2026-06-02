@@ -5,23 +5,23 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.stockflow.stockflow_backend.dtos.UserDto;
-import com.stockflow.stockflow_backend.dtos.UserRequestDto;
+import com.stockflow.stockflow_backend.dtos.UserDTOs.UserDTO;
+import com.stockflow.stockflow_backend.dtos.UserDTOs.UserRequestDTO;
 import com.stockflow.stockflow_backend.entities.User;
-import com.stockflow.stockflow_backend.models.UserRequestModel;
-import com.stockflow.stockflow_backend.models.UserResponseModel;
+import com.stockflow.stockflow_backend.models.UserModels.UserRequestModel;
+import com.stockflow.stockflow_backend.models.UserModels.UserResponseModel;
 
 @Component
 public class UserMapper {
-  public UserDto toUserDto(User user) {
+  public UserDTO toUserDto(User user) {
     if (user == null) {
       return null;
     }
 
-    return new UserDto(user.getName(), user.getLastName(), user.getEmail(), user.getResourceId());
+    return new UserDTO(user.getName(), user.getLastName(),  user.getLastName(),user.getEmail(), user.getResourceId());
   } 
 
-  public List<UserDto> toUserDtoList(List<User> users) {
+  public List<UserDTO> toUserDtoList(List<User> users) {
     if (users == null) {
       return null;
     }
@@ -31,15 +31,15 @@ public class UserMapper {
       .collect(Collectors.toList());
   }
 
-  public UserResponseModel toUserResponseModel(UserDto userDto) {
+  public UserResponseModel toUserResponseModel(UserDTO userDto) {
     if (userDto == null) {
       return null;
     }
 
-    return new UserResponseModel(userDto.name(), userDto.lastName(), userDto.email(), userDto.resourceId());
+    return new UserResponseModel(userDto.name(), userDto.lastName(), userDto.secondLastName(),userDto.email(), userDto.resourceId());
   }
 
-  public List<UserResponseModel> toUserResponseModelList(List<UserDto> userDtos) {
+  public List<UserResponseModel> toUserResponseModelList(List<UserDTO> userDtos) {
     if (userDtos == null) {
       return null;
     }
@@ -49,12 +49,13 @@ public class UserMapper {
       .collect(Collectors.toList());
   }
 
-  public UserRequestDto toUserRequestDto(UserRequestModel user) {
+  public UserRequestDTO toUserRequestDto(UserRequestModel user) {
     if (user == null) return null;
 
-    UserRequestDto userDto = new UserRequestDto();
+    UserRequestDTO userDto = new UserRequestDTO();
     userDto.setName(user.name());
     userDto.setLastName(user.lastName());
+    userDto.setSecondLastName(user.secondLastName());
     userDto.setEmail(user.email());
     userDto.setPassword(user.password());
     return userDto;

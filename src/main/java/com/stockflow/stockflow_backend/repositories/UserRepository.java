@@ -20,13 +20,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     return save(user);
   }
 
-  Optional<User> findByResourceId(UUID resourceId);
-
-  default User getByResourceId(UUID resourceId) {
-    return this.findByResourceId(resourceId).orElse(null);
-  }
 
   default User updateUser(User user) {
     return save(user);
   }
+
+
+  default void removeUser(User user){
+    delete(user);
+  }
+  
+   Optional<User> findByResourceId(UUID resourceId);
 }
