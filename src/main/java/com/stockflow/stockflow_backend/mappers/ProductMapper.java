@@ -5,23 +5,26 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.stockflow.stockflow_backend.dtos.ProductDto;
-import com.stockflow.stockflow_backend.dtos.ProductRequestDto;
+import com.stockflow.stockflow_backend.dtos.CategoryDTOs.CategoryDTO;
+import com.stockflow.stockflow_backend.dtos.ProductDTOs.ProductDTO;
+import com.stockflow.stockflow_backend.dtos.ProductDTOs.ProductRequestDTO;
 import com.stockflow.stockflow_backend.entities.Product;
-import com.stockflow.stockflow_backend.models.ProductRequestModel;
-import com.stockflow.stockflow_backend.models.ProductResponseModel;
+import com.stockflow.stockflow_backend.models.CategoryModels.CategoryResponseModel;
+import com.stockflow.stockflow_backend.models.ProductModels.ProductRequestModel;
+import com.stockflow.stockflow_backend.models.ProductModels.ProductResponseModel;
 
 @Component
 public class ProductMapper {
-  public ProductDto toProductDto(Product product) {
+    public ProductDTO toProductDto(Product product) {
     if (product == null) {
       return null;
     }
+    CategoryDTO categoryDTO = new CategoryDTO(product.getCategory().getName(), product.getCategory().getResourceId());
 
-    return new ProductDto(product.getName(), product.getDescription(), product.getPrice(), product.getResourceId());
+    return new ProductDTO(product.getName(), product.getDescription(), product.getPrice(), product.getResourceId(), categoryDTO, product.getImageURL());
   } 
 
-  public List<ProductDto> toProductDtoList(List<Product> products) {
+  public List<ProductDTO> toProductDtoList(List<Product> products) {
     if (products == null) {
       return null;
     }
@@ -31,15 +34,17 @@ public class ProductMapper {
       .collect(Collectors.toList());
   }
 
-  public ProductResponseModel toProductResponseModel(ProductDto productDto) {
+  public ProductResponseModel toProductResponseModel(ProductDTO productDto) {
     if (productDto == null) {
       return null;
     }
 
-    return new ProductResponseModel(productDto.name(), productDto.description(), productDto.price(), productDto.resourceId());
+    CategoryResponseModel categoryResponseModel = new CategoryResponseModel(productDto.categoryDTO().name(), productDto.categoryDTO().resourceId());
+
+    return new ProductResponseModel(productDto.name(), productDto.description(), productDto.price(), productDto.resourceId(), categoryResponseModel, productDto.imageURL());
   }
 
-  public List<ProductResponseModel> toProductResponseModelList(List<ProductDto> productDtos) {
+  public List<ProductResponseModel> toProductResponseModelList(List<ProductDTO> productDtos) {
     if (productDtos == null) {
       return null;
     }
@@ -49,13 +54,15 @@ public class ProductMapper {
       .collect(Collectors.toList());
   }
 
-  public ProductRequestDto toProductRequestDto(ProductRequestModel product) {
+  public ProductRequestDTO toProductRequestDto(ProductRequestModel product) {
     if (product == null) return null;
 
-    ProductRequestDto productDto = new ProductRequestDto();
+    ProductRequestDTO productDto = new ProductRequestDTO();
     productDto.setName(product.name());
     productDto.setDescription(product.description());
     productDto.setPrice(product.price());
+    productDto.setCategoryResourceId(product.categoryResourceId());
+    productDto.setImageURL(product.imageURL());
     return productDto;
   }
 }

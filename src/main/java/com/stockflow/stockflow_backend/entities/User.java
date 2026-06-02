@@ -26,7 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class User {
-  @Id
+   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
@@ -35,6 +35,9 @@ public class User {
 
   @Column(name = "last_name", nullable = false, length = 100)
   private String lastName;
+
+  @Column(name = "second_last_name", nullable = false, length = 100)
+  private String secondLastName;
 
   @Column(name = "email", nullable = false, unique = true, length = 255)
   private String email;

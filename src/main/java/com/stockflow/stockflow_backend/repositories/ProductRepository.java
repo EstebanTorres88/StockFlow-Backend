@@ -20,13 +20,14 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     return save(product);
   }
 
-  Optional<Product> findByResourceId(UUID resourceId);
-
-  default Product getByResourceId(UUID resourceId) {
-    return this.findByResourceId(resourceId).orElse(null);
-  }
-
   default Product updateProduct(Product product) {
     return save(product);
   }
+
+  default void removeProduct(Product product){
+    delete(product);
+  }
+  
+  Optional<Product> findByResourceId(UUID resourceId);
+
 }
