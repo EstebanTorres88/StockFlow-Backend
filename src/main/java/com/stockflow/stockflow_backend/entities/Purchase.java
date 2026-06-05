@@ -14,6 +14,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 @Entity
 @Table(name = "purchase")
 @Getter
@@ -22,6 +26,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Purchase {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,4 +36,8 @@ public class Purchase {
 
     @Column(name = "reason", nullable = false, length = 255)
     private String reason;
+
+    @Column(name = "resource_id", nullable = false, unique = true, length = 36)
+    @JdbcTypeCode(SqlTypes.VARCHAR)
+    private UUID resourceId;
 }

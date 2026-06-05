@@ -1,12 +1,12 @@
 package com.stockflow.stockflow_backend.dtos.PurchaseDTOs;
 import java.time.LocalDate;
-
-
+import java.util.UUID;
 
 public record PurchaseDTO (
-    Long id, 
     LocalDate date, 
-    String reason) {
+    String reason,
+    UUID resourceId
+) {
 }
 
 
