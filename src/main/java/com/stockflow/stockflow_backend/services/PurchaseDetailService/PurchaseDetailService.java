@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDetailDTOs.PurchaseDetailRequestDTO;
 import com.stockflow.stockflow_backend.entities.Purchase;
@@ -13,7 +14,7 @@ import com.stockflow.stockflow_backend.exceptions.PurchaseDetailNotFoundExceptio
 import com.stockflow.stockflow_backend.repositories.PurchaseDetailRepository;
 import com.stockflow.stockflow_backend.services.PurchaseService.IPurchaseService;
 import com.stockflow.stockflow_backend.services.StockService.IStockService;
-
+@Service
 public class PurchaseDetailService implements IPurchaseDetailService {
 
     @Autowired
