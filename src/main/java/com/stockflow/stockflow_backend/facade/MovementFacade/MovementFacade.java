@@ -1,8 +1,7 @@
 package com.stockflow.stockflow_backend.facade.MovementFacade;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
@@ -23,8 +22,10 @@ public class MovementFacade implements IMovementFacade {
     private MovementMapper movementMapper;
 
     @Override
-    public List<MovementDTO> getAll() {
-        return movementMapper.toMovementDTOList(movementService.getAll());
+    public Page<MovementDTO> getAll(int page) {
+        Page<Movement> movementPage = movementService.getAll(page);
+
+        return movementPage.map(movementMapper::toMovementDTO);
     }
 
     @Override

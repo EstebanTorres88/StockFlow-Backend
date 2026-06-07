@@ -1,10 +1,12 @@
 package com.stockflow.stockflow_backend.services.MovementService;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
@@ -28,9 +30,13 @@ public class MovementService implements IMovementService {
     @Autowired
     private StockRepository stockRepository;
 
+    private static final int PAGE_SIZE = 5;
+
     @Override
-    public List<Movement> getAll() {
-        return movementRepository.findAll();
+    public Page<Movement> getAll(int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+
+        return movementRepository.findAll(pageable);
     }
 
     @Override
