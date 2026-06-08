@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.stockflow.stockflow_backend.dtos.ErrorDTO;
 import com.stockflow.stockflow_backend.exceptions.CategoryNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.ProductNotFoundException;
-import com.stockflow.stockflow_backend.exceptions.PurchaseDetailNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.PurchaseNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.UserNotFoundException;
@@ -61,13 +60,5 @@ public class GlobalExceptionHandler {
             ex.getMessage()));
   }
 
-  @ExceptionHandler(PurchaseDetailNotFoundException.class)
-  public ResponseEntity<ErrorDTO> handlePurchaseDetailNotFound(
-      PurchaseDetailNotFoundException ex) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND)
-        .body(new ErrorDTO(
-            404,
-            ex.getMessage()));
-  }
-
+ 
 }

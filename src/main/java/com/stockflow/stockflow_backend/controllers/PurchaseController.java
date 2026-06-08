@@ -1,9 +1,9 @@
 package com.stockflow.stockflow_backend.controllers;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +13,7 @@ import com.stockflow.stockflow_backend.facade.PurchaseFacade.IPurchaseFacade;
 import com.stockflow.stockflow_backend.mappers.PurchaseMapper;
 import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseRequestModel;
 import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseResponseModel;
+import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseSummaryResponseModel;
 
 import jakarta.validation.Valid;
 
@@ -28,8 +29,8 @@ public class PurchaseController {
     private PurchaseMapper purchaseMapper;
 
     @GetMapping
-    public ResponseEntity<List<PurchaseResponseModel>> findAll() {
-        return ResponseEntity.ok( purchaseMapper.toPurchaseResponseModelList(purchaseFacade.getAll()));
+    public ResponseEntity<Page<PurchaseSummaryResponseModel>> findAll(@RequestParam(defaultValue = "0" ) int page) {
+        return ResponseEntity.ok( purchaseMapper.toPurchaseSummaryResponseModelPage(purchaseFacade.getAll(page)));
     }
 
     @PostMapping
@@ -49,18 +50,5 @@ public class PurchaseController {
         return ResponseEntity.ok(purchaseMapper.toPurchaseResponseModel(purchaseDto));
     }
 
-    @PutMapping("/{resourceId}")
-    public ResponseEntity<PurchaseResponseModel> update( @PathVariable("resourceId") UUID resourceId, @RequestBody @Valid PurchaseRequestModel purchaseRequestModel) {
-
-        PurchaseRequestDTO dto = purchaseMapper.toPurchaseRequestDTO(purchaseRequestModel);
-
-        PurchaseDTO purchaseDto = purchaseFacade.updatePurchase(resourceId, dto);
-
-        return ResponseEntity.ok(purchaseMapper.toPurchaseResponseModel(purchaseDto));
-    }
-
-    @DeleteMapping("/{resourceId}")
-    public void delete( @PathVariable("resourceId") UUID resourceId) {
-        purchaseFacade.removePurchase(resourceId);
-    }
+   
 }

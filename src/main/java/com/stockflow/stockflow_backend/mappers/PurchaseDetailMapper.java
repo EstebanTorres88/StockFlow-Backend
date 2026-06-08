@@ -1,9 +1,6 @@
 package com.stockflow.stockflow_backend.mappers;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDetailDTOs.PurchaseDetailDTO;
@@ -11,24 +8,17 @@ import com.stockflow.stockflow_backend.dtos.PurchaseDetailDTOs.PurchaseDetailReq
 import com.stockflow.stockflow_backend.entities.PurchaseDetail;
 import com.stockflow.stockflow_backend.models.PurchaiseDetailModels.PurchaseDetailRequestModel;
 import com.stockflow.stockflow_backend.models.PurchaiseDetailModels.PurchaseDetailResponseModel;
-import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseResponseModel;
-import com.stockflow.stockflow_backend.models.StockModels.StockResponseModel;
 
 @Component
 public class PurchaseDetailMapper {
-
-    @Autowired
-    private PurchaseMapper purchaseMapper;
-
-    @Autowired
-    private StockMapper stockMapper;
 
     public PurchaseDetailDTO toPurchaseDetailDTO(PurchaseDetail purchaseDetail) {
         if (purchaseDetail == null){
              return null;
         }
-        return new PurchaseDetailDTO( purchaseDetail.getResourceId(), purchaseMapper.toPurchaseDTO(purchaseDetail.getPurchase()),
-        stockMapper.toStockDTO(purchaseDetail.getStock()), purchaseDetail.getQuantity(), purchaseDetail.getUnitPrice());
+
+        
+        return new PurchaseDetailDTO(purchaseDetail.getResourceId(), purchaseDetail.getStock().getProduct().getName(), purchaseDetail.getStock().getProduct().getImageURL(),  purchaseDetail.getQuantity(), purchaseDetail.getUnitPrice(), purchaseDetail.getSubtotal());
     }
 
     public List<PurchaseDetailDTO> toPurchaseDetailDTOList(List<PurchaseDetail> purchaseDetails) {
@@ -37,40 +27,45 @@ public class PurchaseDetailMapper {
         }
         return purchaseDetails.stream()
             .map(this::toPurchaseDetailDTO)
-            .collect(Collectors.toList());
+            .toList();
     }
 
-    public PurchaseDetailResponseModel toPurchaseDetailResponseModel(PurchaseDetailDTO dto) {
-        if (dto == null){
+    public PurchaseDetailResponseModel toPurchaseDetailResponseModel(PurchaseDetailDTO purchaseDetailDTO) {
+        if (purchaseDetailDTO == null){
             return null;
         }
 
-        PurchaseResponseModel purchaseResponseModel = purchaseMapper.toPurchaseResponseModel(dto.purchaseDTO());
-        StockResponseModel stockResponseModel = stockMapper.toStockResponseModel(dto.stockDTO());
 
-        return new PurchaseDetailResponseModel(dto.resourceId(), purchaseResponseModel, stockResponseModel, dto.quantity(), dto.unitPrice() );
+        return new PurchaseDetailResponseModel(purchaseDetailDTO.resourceId(), purchaseDetailDTO.productName(), purchaseDetailDTO.imageURL(), purchaseDetailDTO.quantity(), purchaseDetailDTO.unitPrice(), purchaseDetailDTO.subtotal());
     }
 
-    public List<PurchaseDetailResponseModel> toPurchaseDetailResponseModelList(List<PurchaseDetailDTO> dtos) {
-        if (dtos == null){
+    public List<PurchaseDetailResponseModel> toPurchaseDetailResponseModelList(List<PurchaseDetailDTO> purchaseDetailDTOList) {
+        if (purchaseDetailDTOList == null){
             return null;
         }
-        return dtos.stream()
+        return purchaseDetailDTOList.stream()
             .map(this::toPurchaseDetailResponseModel)
-            .collect(Collectors.toList());
+            .toList();
     }
 
-    public PurchaseDetailRequestDTO toPurchaseDetailRequestDTO(PurchaseDetailRequestModel model) {
-        if (model == null){
+    public PurchaseDetailRequestDTO toPurchaseDetailRequestDTO(PurchaseDetailRequestModel purchaseDetailRequestModel) {
+        if (purchaseDetailRequestModel == null){
             return null;
         }
 
         PurchaseDetailRequestDTO dto = new PurchaseDetailRequestDTO();
-        
-        dto.setPurchaseResourceId(model.purchaseResourceId());
-        dto.setStockResourceId(model.stockResourceId());
-        dto.setQuantity(model.quantity());
-        dto.setUnitPrice(model.unitPrice());
+        dto.setStockResourceId(purchaseDetailRequestModel.stockResourceId());
+        dto.setQuantity(purchaseDetailRequestModel.quantity());
         return dto;
+    }
+
+
+    public List<PurchaseDetailRequestDTO> toPurchaseDetailRequestDTOList(List<PurchaseDetailRequestModel> purchaseDetailRequestModelList) {
+        if (purchaseDetailRequestModelList == null){
+            return null;
+        }
+        return purchaseDetailRequestModelList.stream()
+            .map(this::toPurchaseDetailRequestDTO)
+            .toList();
     }
 }

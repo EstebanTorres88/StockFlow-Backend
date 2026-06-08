@@ -12,6 +12,7 @@ import java.util.UUID;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
+   
      Page<Stock> findAll(Pageable pageable);
     
     Optional<Stock> findByResourceId(UUID resourceId);
