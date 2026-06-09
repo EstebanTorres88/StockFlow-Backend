@@ -25,7 +25,7 @@ public class MovementFacade implements IMovementFacade {
     public Page<MovementDTO> getAll(int page) {
         Page<Movement> movementPage = movementService.getAll(page);
 
-        return movementPage.map(movementMapper::toMovementDTO);
+        return movementMapper.toMovementDTOPage(movementPage);
     }
 
     @Override

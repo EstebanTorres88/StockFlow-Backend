@@ -2,6 +2,7 @@ package com.stockflow.stockflow_backend.mappers;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
@@ -27,6 +28,14 @@ public class MovementMapper {
         );
     }
 
+    public Page<MovementDTO> toMovementDTOPage(Page<Movement> movementPage) {
+        if (movementPage == null) {
+            return null;
+        }
+
+        return movementPage.map(this::toMovementDTO);
+    }
+
     public List<MovementDTO> toMovementDTOList(List<Movement> movements) {
         if (movements == null) {
             return null;
@@ -47,6 +56,14 @@ public class MovementMapper {
             dto.resourceId(),
             dto.stockResourceId()
         );
+    }
+
+    public Page<MovementResponseModel> toMovementResponseModelPage(Page<MovementDTO> movementDTOPage) {
+        if (movementDTOPage == null) {
+            return null;
+        }
+
+        return movementDTOPage.map(this::toMovementResponseModel);
     }
 
     public List<MovementResponseModel> toMovementResponseModelList(List<MovementDTO> dtos) {

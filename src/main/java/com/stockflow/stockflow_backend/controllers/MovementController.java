@@ -35,7 +35,7 @@ public class MovementController {
     public ResponseEntity<Page<MovementResponseModel>> getAll(@RequestParam(defaultValue = "0") int page) {
         Page<MovementDTO> movementDtoPage = movementFacade.getAll(page);
 
-        return ResponseEntity.ok(movementDtoPage.map(movementMapper::toMovementResponseModel));
+        return ResponseEntity.ok(movementMapper.toMovementResponseModelPage(movementDtoPage));
     }
 
     @PostMapping
