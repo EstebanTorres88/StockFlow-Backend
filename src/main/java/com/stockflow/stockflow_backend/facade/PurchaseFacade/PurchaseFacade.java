@@ -1,13 +1,14 @@
 package com.stockflow.stockflow_backend.facade.PurchaseFacade;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseDTO;
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseRequestDTO;
+import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseSummaryDTO;
 import com.stockflow.stockflow_backend.entities.Purchase;
 import com.stockflow.stockflow_backend.mappers.PurchaseMapper;
 import com.stockflow.stockflow_backend.services.PurchaseService.IPurchaseService;
@@ -23,8 +24,8 @@ public class PurchaseFacade implements IPurchaseFacade {
     private PurchaseMapper purchaseMapper;
 
     @Override
-    public List<PurchaseDTO> getAll() {
-        return purchaseMapper.toPurchaseDTOList(purchaseService.getAll());
+    public Page<PurchaseSummaryDTO> getAll(int page) {
+        return purchaseMapper.toPurchaseSummaryDTOPage(purchaseService.getAll(page));
     }
 
     @Override
@@ -40,18 +41,5 @@ public class PurchaseFacade implements IPurchaseFacade {
         return purchaseMapper.toPurchaseDTO(purchase);
     }
 
-    @Override
-    @Transactional
-    public PurchaseDTO updatePurchase(UUID resourceId, PurchaseRequestDTO dto) {
-        Purchase purchase = purchaseService.updatePurchase(resourceId, dto);
-        return purchaseMapper.toPurchaseDTO(purchase);
-    }
-
-
-    @Override
-    @Transactional
-    public void removePurchase(UUID resourceId) {
-        purchaseService.removePurchase(resourceId);
-    }
-    
+   
 }

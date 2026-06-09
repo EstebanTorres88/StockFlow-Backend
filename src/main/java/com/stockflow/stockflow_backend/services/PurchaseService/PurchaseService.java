@@ -1,15 +1,24 @@
 package com.stockflow.stockflow_backend.services.PurchaseService;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseRequestDTO;
+import com.stockflow.stockflow_backend.dtos.PurchaseDetailDTOs.PurchaseDetailRequestDTO;
 import com.stockflow.stockflow_backend.entities.Purchase;
+import com.stockflow.stockflow_backend.entities.PurchaseDetail;
+import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.exceptions.PurchaseNotFoundException;
+import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
 import com.stockflow.stockflow_backend.repositories.PurchaseRepository;
+import com.stockflow.stockflow_backend.repositories.StockRepository;
 
 @Service
 public class PurchaseService implements IPurchaseService {
@@ -17,41 +26,112 @@ public class PurchaseService implements IPurchaseService {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
+    @Autowired
+    private StockRepository stockRepository;
+
+
+    private static final int PAGE_SIZE = 10;
+
     @Override
-    public List<Purchase> getAll() {
-        return purchaseRepository.findAll();
+    public Page<Purchase> getAll(int page) {
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        
+        Page<Purchase> purchases = purchaseRepository.findAll(pageable);
+        purchases.forEach(purchase -> {
+            calculatePurchaseProductsAmount(purchase);
+            calculatePurchaseTotal(purchase);
+        });
+
+    
+
+        return purchases;
     }
 
     @Override
-    public Purchase addPurchase(PurchaseRequestDTO dto) {
+    public Purchase addPurchase(PurchaseRequestDTO purchaseRequestDTO) {
+
         Purchase purchase = Purchase.builder()
-            .date(dto.getDate())
-            .reason(dto.getReason())
+        .date(purchaseRequestDTO.getDate())
+        .reason(purchaseRequestDTO.getReason())
+        .resourceId(UUID.randomUUID())
+        .purchaseDetails(new ArrayList<>())
+        .build();
+
+
+        for (PurchaseDetailRequestDTO purchaseDetailDTO : purchaseRequestDTO.getPurchaseDetails()) {
+
+            Stock stock = stockRepository.findByResourceId(purchaseDetailDTO.getStockResourceId()).orElseThrow(() -> new StockNotFoundException());
+            Integer newQuantity = stock.getQuantity() + purchaseDetailDTO.getQuantity();
+            stock.setQuantity(newQuantity); 
+
+
+            PurchaseDetail purchaseDetail = PurchaseDetail.builder()
+            .purchase(purchase)
+            .stock(stock)
+            .quantity(purchaseDetailDTO.getQuantity())
+            .unitPrice(stock.getProduct().getPrice())
             .resourceId(UUID.randomUUID())
             .build();
-        return purchaseRepository.save(purchase);
+
+            purchase.getPurchaseDetails().add(purchaseDetail);
+        }
+
+
+        calculatePurchaseTotal(purchase);
+        calculatePurchaseProductsAmount(purchase);
+        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
+
+        return purchaseRepository.addPurchase(purchase);
+        
     }
 
     @Override
     public Purchase getByResourceId(UUID resourceId) {
-        return purchaseRepository.findByResourceId(resourceId)
+        Purchase purchase =  purchaseRepository.findByResourceId(resourceId)
             .orElseThrow(() -> new PurchaseNotFoundException(resourceId));
+
+
+        calculatePurchaseProductsAmount(purchase);
+        calculatePurchaseTotal(purchase);
+        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
+        
+        
+        return purchase;
     }
 
-    @Override
-    public Purchase updatePurchase(UUID resourceId, PurchaseRequestDTO dto) {
-        Purchase purchase = purchaseRepository.findByResourceId(resourceId)
-            .orElseThrow(() -> new PurchaseNotFoundException(resourceId));
-        purchase.setDate(dto.getDate());
-        purchase.setReason(dto.getReason());
-        return purchaseRepository.save(purchase);
+
+
+
+
+    private void calculatePurchaseProductsAmount(Purchase purchase) {
+
+        Integer productsAmount = purchase.getPurchaseDetails().stream()
+                                .mapToInt(purchaseDetail -> purchaseDetail.getQuantity())
+                                .sum();
+
+        purchase.setTotalProductsAmount(productsAmount);                        
+        
     }
 
-    @Override
-    public void removePurchase(UUID resourceId) {
-        Purchase purchase = purchaseRepository.findByResourceId(resourceId)
-            .orElseThrow(() -> new PurchaseNotFoundException(resourceId));
-        purchaseRepository.delete(purchase);
+
+
+    private void calculatePurchaseTotal(Purchase purchase) {
+        BigDecimal purchaseTotal = purchase.getPurchaseDetails().stream()
+                                    .map(purchaseDetail -> purchaseDetail.getUnitPrice().multiply(BigDecimal.valueOf(purchaseDetail.getQuantity())))
+                                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+    
+
+
+        purchase.setPurchaseTotal(purchaseTotal);
     }
 
+
+    private void calculateDetailSubTotal(PurchaseDetail purchaseDetail){
+        BigDecimal purchaseSubTotal = purchaseDetail.getUnitPrice().multiply(BigDecimal.valueOf(purchaseDetail.getQuantity()));
+        purchaseDetail.setSubtotal(purchaseSubTotal);
+
+    }
+
+
+ 
 }
