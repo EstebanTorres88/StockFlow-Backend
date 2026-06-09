@@ -63,6 +63,7 @@ public class ProductMapper {
     productDto.setPrice(product.price());
     productDto.setCategoryResourceId(product.categoryResourceId());
     productDto.setImageURL(product.imageURL());
+    productDto.setMinimumQuantity(product.minimumQuantity()); 
     return productDto;
   }
 }
