@@ -3,6 +3,7 @@ package com.stockflow.stockflow_backend.mappers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.ProductDTOs.ProductDTO;
@@ -29,13 +30,13 @@ public class StockMapper {
     }
 
 
-    public List<StockDTO> toStockDTOList(List<Stock> stockList){
+    public Page<StockDTO> toStockDTOPage(Page<Stock> stockPage){
 
-        if (stockList == null) {
+        if (stockPage == null) {
             return null;
         }
 
-        return stockList.stream().map(this::toStockDTO).toList();
+        return stockPage.map(this::toStockDTO);
     }
 
 
@@ -54,12 +55,12 @@ public class StockMapper {
 
 
 
-    public List<StockResponseModel> toStockResponseModelList(List<StockDTO> stockDTOList){
-        if (stockDTOList == null) {
+    public Page<StockResponseModel> toStockResponseModelPage(Page<StockDTO> stockDTOPage){
+        if (stockDTOPage == null) {
             return null;
         }
 
-        return stockDTOList.stream().map(this::toStockResponseModel).toList();
+        return stockDTOPage.map(this::toStockResponseModel);
 
     }
     
