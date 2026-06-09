@@ -48,7 +48,7 @@ public class Product {
   @JdbcTypeCode(SqlTypes.VARCHAR)
   private UUID resourceId;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "category_id", nullable = false)
   private Category category;
 
