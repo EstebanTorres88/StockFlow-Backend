@@ -17,6 +17,7 @@ import com.stockflow.stockflow_backend.facade.MovementFacade.IMovementFacade;
 import com.stockflow.stockflow_backend.mappers.MovementMapper;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementRequestModel;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseModel;
+import com.stockflow.stockflow_backend.models.MovementModels.MovementStatsResponseModel;
 
 import jakarta.validation.Valid;
 
@@ -43,5 +44,10 @@ public class MovementController {
         MovementRequestDTO dto = movementMapper.toMovementRequestDTO(requestModel);
         MovementDTO movementDto = movementFacade.createMovement(dto);
         return ResponseEntity.ok(movementMapper.toMovementResponseModel(movementDto));
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<MovementStatsResponseModel> getStats() {
+        return ResponseEntity.ok(movementMapper.toMovementStatsResponseModel(movementFacade.getStats()));
     }
 }

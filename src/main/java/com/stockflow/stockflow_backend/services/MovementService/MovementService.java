@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
+import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementStatsDTO;
 import com.stockflow.stockflow_backend.entities.Movement;
 import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.repositories.MovementRepository;
@@ -37,6 +38,15 @@ public class MovementService implements IMovementService {
         Pageable pageable = PageRequest.of(page, PAGE_SIZE);
 
         return movementRepository.findAll(pageable);
+    }
+
+    @Override
+    public MovementStatsDTO getStats() {
+        long totalMovements = movementRepository.count();
+        int totalInflows = movementRepository.sumInflows();
+        int totalOutflows = Math.abs(movementRepository.sumOutflows());
+
+        return new MovementStatsDTO(totalMovements, totalInflows, totalOutflows);
     }
 
     @Override

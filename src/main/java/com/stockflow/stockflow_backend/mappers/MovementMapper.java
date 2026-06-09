@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
+import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementStatsDTO;
 import com.stockflow.stockflow_backend.entities.Movement;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementRequestModel;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseModel;
+import com.stockflow.stockflow_backend.models.MovementModels.MovementStatsResponseModel;
 
 @Component
 public class MovementMapper {
@@ -84,5 +86,17 @@ public class MovementMapper {
         dto.setQuantity(model.quantity());
         dto.setNote(model.note());
         return dto;
+    }
+
+    public MovementStatsResponseModel toMovementStatsResponseModel(MovementStatsDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return new MovementStatsResponseModel(
+            dto.totalMovements(),
+            dto.totalInflows(),
+            Math.abs(dto.totalOutflows())
+        );
     }
 }
