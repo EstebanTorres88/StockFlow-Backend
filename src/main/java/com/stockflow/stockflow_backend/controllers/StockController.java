@@ -33,7 +33,7 @@ public class StockController {
     public ResponseEntity<Page<StockResponseModel>> getAll(@RequestParam(defaultValue = "0") int page){
         Page<StockDTO> stockDtoPage = stockFacade.getAll(page);
 
-        return ResponseEntity.ok(stockDtoPage.map(stock -> stockMapper.toStockResponseModel(stock)));
+        return ResponseEntity.ok(stockMapper.toStockResponseModelPage(stockDtoPage));
     }
 
     @GetMapping(path = "/{resourceId}")

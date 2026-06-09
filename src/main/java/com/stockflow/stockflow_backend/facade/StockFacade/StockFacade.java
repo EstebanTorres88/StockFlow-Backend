@@ -25,7 +25,7 @@ public class StockFacade implements IStockFacade{
     public Page<StockDTO> getAll(int page) {
         Page<Stock> stockPage = stockService.getAll(page);
 
-        return stockPage.map(stock -> stockMapper.toStockDTO(stock));
+        return stockMapper.toStockDTOPage(stockPage);
     }
 
     @Override
