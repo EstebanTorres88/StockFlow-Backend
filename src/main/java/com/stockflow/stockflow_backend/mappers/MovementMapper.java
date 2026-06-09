@@ -1,6 +1,8 @@
 package com.stockflow.stockflow_backend.mappers;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -43,7 +45,9 @@ public class MovementMapper {
             return null;
         }
 
-        return movements.stream().map(this::toMovementDTO).toList();
+        List<MovementDTO> list = movements.stream().map(this::toMovementDTO).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
     }
 
     public MovementResponseModel toMovementResponseModel(MovementDTO dto) {
@@ -73,7 +77,9 @@ public class MovementMapper {
             return null;
         }
 
-        return dtos.stream().map(this::toMovementResponseModel).toList();
+        List<MovementResponseModel> list = dtos.stream().map(this::toMovementResponseModel).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
     }
 
     public MovementRequestDTO toMovementRequestDTO(MovementRequestModel model) {
