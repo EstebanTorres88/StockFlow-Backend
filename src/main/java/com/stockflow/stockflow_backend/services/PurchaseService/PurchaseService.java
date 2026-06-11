@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseRequestDTO;
@@ -34,7 +35,7 @@ public class PurchaseService implements IPurchaseService {
 
     @Override
     public Page<Purchase> getAll(int page) {
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending());
         
         Page<Purchase> purchases = purchaseRepository.findAll(pageable);
         purchases.forEach(purchase -> {
