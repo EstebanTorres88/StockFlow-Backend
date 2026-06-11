@@ -4,11 +4,13 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 
+import com.stockflow.stockflow_backend.dtos.StockDTOs.StockStatsDTO;
 import com.stockflow.stockflow_backend.entities.Stock;
 
 public interface IStockService {
 
     Page<Stock> getAll(int page);
     Stock findByResourceId(UUID resourceId);
+    StockStatsDTO getStockStats();
 
 }
