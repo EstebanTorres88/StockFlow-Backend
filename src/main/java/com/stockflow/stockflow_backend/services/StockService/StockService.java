@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.stockflow.stockflow_backend.dtos.StockDTOs.StockStatsDTO;
 import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
 import com.stockflow.stockflow_backend.repositories.StockRepository;
@@ -23,7 +25,7 @@ public class StockService implements IStockService {
 
     @Override
     public Page<Stock> getAll(int page) {
-        Pageable pageable = PageRequest.of(page, PAGE_SIZE);
+        Pageable pageable = PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending());
 
         return stockRepository.findAll(pageable);
     }
@@ -31,6 +33,16 @@ public class StockService implements IStockService {
     @Override
     public Stock findByResourceId(UUID resourceId) {
         return stockRepository.findByResourceId(resourceId).orElseThrow(() -> new StockNotFoundException(resourceId));
+    }
+
+
+    @Override
+    public StockStatsDTO getStockStats() {
+        Integer totalProducts = stockRepository.countTotalProducts();
+        Integer lowStockProducts = stockRepository.countLowStockProducts();
+        var inventoryValue = stockRepository.sumInventoryValue();   
+
+        return new StockStatsDTO(totalProducts, lowStockProducts, inventoryValue);
     }
 
 
