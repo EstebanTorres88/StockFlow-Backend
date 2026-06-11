@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
+import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementStatsDTO;
 import com.stockflow.stockflow_backend.entities.Movement;
 import com.stockflow.stockflow_backend.mappers.MovementMapper;
 import com.stockflow.stockflow_backend.services.MovementService.IMovementService;
@@ -33,5 +34,10 @@ public class MovementFacade implements IMovementFacade {
     public MovementDTO createMovement(MovementRequestDTO dto) {
         Movement movement = movementService.createMovement(dto);
         return movementMapper.toMovementDTO(movement);
+    }
+
+    @Override
+    public MovementStatsDTO getStats() {
+        return movementService.getStats();
     }
 }

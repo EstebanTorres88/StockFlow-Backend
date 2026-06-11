@@ -1,15 +1,19 @@
 package com.stockflow.stockflow_backend.mappers;
 
 import java.util.List;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
+import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementStatsDTO;
 import com.stockflow.stockflow_backend.entities.Movement;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementRequestModel;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseModel;
+import com.stockflow.stockflow_backend.models.MovementModels.MovementStatsResponseModel;
 
 @Component
 public class MovementMapper {
@@ -41,7 +45,9 @@ public class MovementMapper {
             return null;
         }
 
-        return movements.stream().map(this::toMovementDTO).toList();
+        List<MovementDTO> list = movements.stream().map(this::toMovementDTO).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
     }
 
     public MovementResponseModel toMovementResponseModel(MovementDTO dto) {
@@ -71,7 +77,9 @@ public class MovementMapper {
             return null;
         }
 
-        return dtos.stream().map(this::toMovementResponseModel).toList();
+        List<MovementResponseModel> list = dtos.stream().map(this::toMovementResponseModel).collect(Collectors.toList());
+        Collections.reverse(list);
+        return list;
     }
 
     public MovementRequestDTO toMovementRequestDTO(MovementRequestModel model) {
@@ -84,5 +92,17 @@ public class MovementMapper {
         dto.setQuantity(model.quantity());
         dto.setNote(model.note());
         return dto;
+    }
+
+    public MovementStatsResponseModel toMovementStatsResponseModel(MovementStatsDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
+        return new MovementStatsResponseModel(
+            dto.totalMovements(),
+            dto.totalInflows(),
+            Math.abs(dto.totalOutflows())
+        );
     }
 }
