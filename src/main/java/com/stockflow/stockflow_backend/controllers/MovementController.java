@@ -17,7 +17,6 @@ import com.stockflow.stockflow_backend.facade.MovementFacade.IMovementFacade;
 import com.stockflow.stockflow_backend.mappers.MovementMapper;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementRequestModel;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseModel;
-import com.stockflow.stockflow_backend.models.MovementModels.MovementStatsResponseModel;
 
 import jakarta.validation.Valid;
 
@@ -26,28 +25,23 @@ import jakarta.validation.Valid;
 @RequestMapping("/movements")
 public class MovementController {
 
-    @Autowired
-    private IMovementFacade movementFacade;
+  @Autowired
+  private IMovementFacade movementFacade;
 
-    @Autowired
-    private MovementMapper movementMapper;
+  @Autowired
+  private MovementMapper movementMapper;
 
-    @GetMapping
-    public ResponseEntity<Page<MovementResponseModel>> getAll(@RequestParam(defaultValue = "0") int page) {
-        Page<MovementDTO> movementDtoPage = movementFacade.getAll(page);
+  @GetMapping
+  public ResponseEntity<Page<MovementResponseModel>> getAll(@RequestParam(defaultValue = "0") int page) {
+    Page<MovementDTO> movementDtoPage = movementFacade.getAll(page);
 
-        return ResponseEntity.ok(movementMapper.toMovementResponseModelPage(movementDtoPage));
-    }
+    return ResponseEntity.ok(movementMapper.toMovementResponseModelPage(movementDtoPage));
+  }
 
-    @PostMapping
-    public ResponseEntity<MovementResponseModel> create(@RequestBody @Valid MovementRequestModel requestModel) {
-        MovementRequestDTO dto = movementMapper.toMovementRequestDTO(requestModel);
-        MovementDTO movementDto = movementFacade.createMovement(dto);
-        return ResponseEntity.ok(movementMapper.toMovementResponseModel(movementDto));
-    }
-
-    @GetMapping("/stats")
-    public ResponseEntity<MovementStatsResponseModel> getStats() {
-        return ResponseEntity.ok(movementMapper.toMovementStatsResponseModel(movementFacade.getStats()));
-    }
+  @PostMapping
+  public ResponseEntity<MovementResponseModel> create(@RequestBody @Valid MovementRequestModel requestModel) {
+    MovementRequestDTO dto = movementMapper.toMovementRequestDTO(requestModel);
+    MovementDTO movementDto = movementFacade.createMovement(dto);
+    return ResponseEntity.ok(movementMapper.toMovementResponseModel(movementDto));
+  }
 }
