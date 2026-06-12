@@ -18,7 +18,8 @@ public class PurchaseDetailMapper {
         }
 
         
-        return new PurchaseDetailDTO(purchaseDetail.getResourceId(), purchaseDetail.getStock().getProduct().getName(), purchaseDetail.getStock().getProduct().getImageURL(),  purchaseDetail.getQuantity(), purchaseDetail.getUnitPrice(), purchaseDetail.getSubtotal());
+        return new PurchaseDetailDTO(purchaseDetail.getResourceId(), purchaseDetail.getStock().getProduct().getName(), purchaseDetail.getQuantity(), 
+        purchaseDetail.getUnitPrice(), purchaseDetail.getSubtotal());
     }
 
     public List<PurchaseDetailDTO> toPurchaseDetailDTOList(List<PurchaseDetail> purchaseDetails) {
@@ -36,7 +37,7 @@ public class PurchaseDetailMapper {
         }
 
 
-        return new PurchaseDetailResponseModel(purchaseDetailDTO.resourceId(), purchaseDetailDTO.productName(), purchaseDetailDTO.imageURL(), purchaseDetailDTO.quantity(), purchaseDetailDTO.unitPrice(), purchaseDetailDTO.subtotal());
+        return new PurchaseDetailResponseModel(purchaseDetailDTO.resourceId(), purchaseDetailDTO.productName(), purchaseDetailDTO.quantity(), purchaseDetailDTO.unitPrice(), purchaseDetailDTO.subtotal());
     }
 
     public List<PurchaseDetailResponseModel> toPurchaseDetailResponseModelList(List<PurchaseDetailDTO> purchaseDetailDTOList) {
