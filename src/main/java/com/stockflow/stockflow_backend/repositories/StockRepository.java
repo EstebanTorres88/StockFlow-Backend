@@ -19,15 +19,4 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     
     Optional<Stock> findByResourceId(UUID resourceId);
 
-    @Query("SELECT COUNT(DISTINCT stock.product.id) FROM Stock stock")
-    Integer countTotalProducts();
-
-
-    @Query("SELECT COUNT(stock) FROM Stock stock WHERE stock.quantity < stock.minimumQuantity")
-    Integer countLowStockProducts();
-
-
-    @Query("SELECT SUM(stock.quantity * stock.product.price) FROM Stock stock")
-    BigDecimal sumInventoryValue();
-
 }
