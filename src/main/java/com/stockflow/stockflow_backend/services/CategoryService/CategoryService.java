@@ -30,6 +30,7 @@ public class CategoryService implements ICategoryService {
         Category category = Category.builder()
         .name(categoryRequestDTO.getName())
         .resourceId(UUID.randomUUID())
+        .imageURL(categoryRequestDTO.getImageUrl())
         .build();
         return categoryRepository.addCategory(category);
     }
@@ -39,6 +40,7 @@ public class CategoryService implements ICategoryService {
     public Category updateCategory(UUID resourceId, CategoryRequestDTO categoryRequestDTO) {
         Category category = categoryRepository.findByResourceId(resourceId).orElseThrow(()-> new CategoryNotFoundException());
         category.setName(categoryRequestDTO.getName());
+        category.setImageURL(categoryRequestDTO.getImageUrl());
         return categoryRepository.updateCategory(category);
     }
 

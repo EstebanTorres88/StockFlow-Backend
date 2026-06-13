@@ -43,6 +43,8 @@ public class Category {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private UUID resourceId;
 
+    @Column(name = "image_url", length = 500)
+    private String imageURL;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
