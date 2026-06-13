@@ -6,11 +6,9 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.ProductDTOs.ProductDTO;
 import com.stockflow.stockflow_backend.dtos.StockDTOs.StockDTO;
-import com.stockflow.stockflow_backend.dtos.StockDTOs.StockStatsDTO;
 import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.models.ProductModels.ProductResponseModel;
 import com.stockflow.stockflow_backend.models.StockModels.StockResponseModel;
-import com.stockflow.stockflow_backend.models.StockModels.StockStatsResponseModel;
 
 @Component
 public class StockMapper {
@@ -66,16 +64,6 @@ public class StockMapper {
 
 
 
-    public StockStatsResponseModel toStockStatsResponseModel(StockStatsDTO stockStatsDTO) {
-        if (stockStatsDTO == null) {
-            return null;
-        }
-
-        return new StockStatsResponseModel(
-            stockStatsDTO.totalProducts(),
-            stockStatsDTO.lowStockProducts(),
-            stockStatsDTO.inventoryValue()
-        );
-    }
+  
     
 }

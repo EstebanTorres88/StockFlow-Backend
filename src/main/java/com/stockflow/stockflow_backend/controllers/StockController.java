@@ -16,7 +16,6 @@ import com.stockflow.stockflow_backend.dtos.StockDTOs.StockDTO;
 import com.stockflow.stockflow_backend.facade.StockFacade.IStockFacade;
 import com.stockflow.stockflow_backend.mappers.StockMapper;
 import com.stockflow.stockflow_backend.models.StockModels.StockResponseModel;
-import com.stockflow.stockflow_backend.models.StockModels.StockStatsResponseModel;
 
 @RestController
 @CrossOrigin("*")
@@ -43,8 +42,5 @@ public class StockController {
     }
 
 
-    @GetMapping(path = "/stats")
-    public ResponseEntity<StockStatsResponseModel> getStockStats(){
-        return ResponseEntity.ok(stockMapper.toStockStatsResponseModel(stockFacade.getStockStats()));
-    }
+   
 }
