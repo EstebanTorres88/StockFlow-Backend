@@ -21,7 +21,7 @@ public class CategoryMapper {
             return null;
         }
 
-        return new CategoryDTO(category.getName(), category.getResourceId());
+        return new CategoryDTO(category.getName(), category.getResourceId(), category.getImageURL());
     }
 
 
@@ -45,7 +45,7 @@ public class CategoryMapper {
 
         }
 
-        return new CategoryResponseModel(categoryDTO.name(), categoryDTO.resourceId());
+        return new CategoryResponseModel(categoryDTO.name(), categoryDTO.resourceId(), categoryDTO.imageUrl());
     }
 
 
