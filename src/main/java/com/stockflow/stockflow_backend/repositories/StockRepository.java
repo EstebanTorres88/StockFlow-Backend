@@ -15,19 +15,10 @@ import java.util.UUID;
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
    
+    @Query("SELECT stock FROM Stock stock WHERE stock.product.active = true")
      Page<Stock> findAll(Pageable pageable);
     
+    @Query("SELECT stock FROM Stock stock WHERE stock.resourceId = :resourceId AND stock.product.active = true")
     Optional<Stock> findByResourceId(UUID resourceId);
-
-    @Query("SELECT COUNT(DISTINCT stock.product.id) FROM Stock stock")
-    Integer countTotalProducts();
-
-
-    @Query("SELECT COUNT(stock) FROM Stock stock WHERE stock.quantity < stock.minimumQuantity")
-    Integer countLowStockProducts();
-
-
-    @Query("SELECT SUM(stock.quantity * stock.product.price) FROM Stock stock")
-    BigDecimal sumInventoryValue();
 
 }

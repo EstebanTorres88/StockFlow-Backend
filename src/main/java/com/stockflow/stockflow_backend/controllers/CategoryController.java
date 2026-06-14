@@ -35,22 +35,20 @@ public class CategoryController {
     @Autowired
     private CategoryMapper categoryMapper;
 
-
     @GetMapping
-    public ResponseEntity<List<CategoryResponseModel>> findAll(){
+    public ResponseEntity<List<CategoryResponseModel>> findAll() {
         return ResponseEntity.ok(categoryMapper.toCategoryResponseModelList(categoryFacade.getAll()));
 
     }
 
     @GetMapping(path = "/{resourceId}")
-    public ResponseEntity<CategoryResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId){
-       CategoryDTO categoryDTO = categoryFacade.getByResourceId(resourceId);
-       return ResponseEntity.ok(categoryMapper.toCategoryResponseModel(categoryDTO));
+    public ResponseEntity<CategoryResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId) {
+        CategoryDTO categoryDTO = categoryFacade.getByResourceId(resourceId);
+        return ResponseEntity.ok(categoryMapper.toCategoryResponseModel(categoryDTO));
     }
 
-
     @PostMapping
-    public ResponseEntity<CategoryResponseModel> add(@RequestBody @Valid CategoryRequestModel categoryRequestModel){
+    public ResponseEntity<CategoryResponseModel> add(@RequestBody @Valid CategoryRequestModel categoryRequestModel) {
         CategoryRequestDTO dto = categoryMapper.toCategoryRequestDto(categoryRequestModel);
         CategoryDTO categoryDTO = categoryFacade.addCategory(dto);
 
@@ -58,23 +56,19 @@ public class CategoryController {
 
     }
 
-
     @PutMapping(path = "/{resourceId}")
-    public ResponseEntity<CategoryResponseModel> update(@RequestBody @Valid CategoryRequestModel categoryRequestModel, @PathVariable("resourceId")UUID resourceId){
+    public ResponseEntity<CategoryResponseModel> update(@RequestBody @Valid CategoryRequestModel categoryRequestModel,
+            @PathVariable("resourceId") UUID resourceId) {
         CategoryRequestDTO dto = categoryMapper.toCategoryRequestDto(categoryRequestModel);
         CategoryDTO categoryDTO = categoryFacade.updateCategory(resourceId, dto);
-        
+
         return ResponseEntity.ok(categoryMapper.toCategoryResponseModel(categoryDTO));
 
     }
 
-
     @DeleteMapping(path = "/{resourceId}")
-    public void remove(@PathVariable("resourceId")UUID resourceId){
+    public void remove(@PathVariable("resourceId") UUID resourceId) {
         categoryFacade.removeCategory(resourceId);
     }
 
-
-  
-    
 }

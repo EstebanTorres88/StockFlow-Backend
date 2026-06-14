@@ -33,9 +33,8 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "quantity" , nullable= false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
-    
 
     @Column(name = "minimun_quantity", nullable = false)
     private Integer minimumQuantity;
@@ -43,7 +42,6 @@ public class Stock {
     @OneToOne
     @JoinColumn(name = "product_id", nullable = false, unique = true)
     private Product product;
-
 
     @Column(name = "resource_id", nullable = false, unique = true, length = 36)
     @JdbcTypeCode(SqlTypes.VARCHAR)

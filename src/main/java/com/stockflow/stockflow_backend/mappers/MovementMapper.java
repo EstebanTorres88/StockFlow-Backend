@@ -9,100 +9,84 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementDTO;
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
-import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementStatsDTO;
 import com.stockflow.stockflow_backend.entities.Movement;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementRequestModel;
 import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseModel;
-import com.stockflow.stockflow_backend.models.MovementModels.MovementStatsResponseModel;
 
 @Component
 public class MovementMapper {
 
-    public MovementDTO toMovementDTO(Movement movement) {
-        if (movement == null) {
-            return null;
-        }
-
-        return new MovementDTO(
-            movement.getQuantity(),
-            movement.getNote(),
-            movement.getCreatedAt(),
-            movement.getResourceId(),
-            movement.getStock().getResourceId()
-        );
+  public MovementDTO toMovementDTO(Movement movement) {
+    if (movement == null) {
+      return null;
     }
 
-    public Page<MovementDTO> toMovementDTOPage(Page<Movement> movementPage) {
-        if (movementPage == null) {
-            return null;
-        }
+    return new MovementDTO(
+        movement.getQuantity(),
+        movement.getNote(),
+        movement.getCreatedAt(),
+        movement.getResourceId(),
+        movement.getStock().getResourceId());
+  }
 
-        return movementPage.map(this::toMovementDTO);
+  public Page<MovementDTO> toMovementDTOPage(Page<Movement> movementPage) {
+    if (movementPage == null) {
+      return null;
     }
 
-    public List<MovementDTO> toMovementDTOList(List<Movement> movements) {
-        if (movements == null) {
-            return null;
-        }
+    return movementPage.map(this::toMovementDTO);
+  }
 
-        List<MovementDTO> list = movements.stream().map(this::toMovementDTO).collect(Collectors.toList());
-        Collections.reverse(list);
-        return list;
+  public List<MovementDTO> toMovementDTOList(List<Movement> movements) {
+    if (movements == null) {
+      return null;
     }
 
-    public MovementResponseModel toMovementResponseModel(MovementDTO dto) {
-        if (dto == null) {
-            return null;
-        }
+    List<MovementDTO> list = movements.stream().map(this::toMovementDTO).collect(Collectors.toList());
+    Collections.reverse(list);
+    return list;
+  }
 
-        return new MovementResponseModel(
-            dto.quantity(),
-            dto.note(),
-            dto.createdAt(),
-            dto.resourceId(),
-            dto.stockResourceId()
-        );
+  public MovementResponseModel toMovementResponseModel(MovementDTO dto) {
+    if (dto == null) {
+      return null;
     }
 
-    public Page<MovementResponseModel> toMovementResponseModelPage(Page<MovementDTO> movementDTOPage) {
-        if (movementDTOPage == null) {
-            return null;
-        }
+    return new MovementResponseModel(
+        dto.quantity(),
+        dto.note(),
+        dto.createdAt(),
+        dto.resourceId(),
+        dto.stockResourceId());
+  }
 
-        return movementDTOPage.map(this::toMovementResponseModel);
+  public Page<MovementResponseModel> toMovementResponseModelPage(Page<MovementDTO> movementDTOPage) {
+    if (movementDTOPage == null) {
+      return null;
     }
 
-    public List<MovementResponseModel> toMovementResponseModelList(List<MovementDTO> dtos) {
-        if (dtos == null) {
-            return null;
-        }
+    return movementDTOPage.map(this::toMovementResponseModel);
+  }
 
-        List<MovementResponseModel> list = dtos.stream().map(this::toMovementResponseModel).collect(Collectors.toList());
-        Collections.reverse(list);
-        return list;
+  public List<MovementResponseModel> toMovementResponseModelList(List<MovementDTO> dtos) {
+    if (dtos == null) {
+      return null;
     }
 
-    public MovementRequestDTO toMovementRequestDTO(MovementRequestModel model) {
-        if (model == null) {
-            return null;
-        }
+    List<MovementResponseModel> list = dtos.stream().map(this::toMovementResponseModel).collect(Collectors.toList());
+    Collections.reverse(list);
+    return list;
+  }
 
-        MovementRequestDTO dto = new MovementRequestDTO();
-        dto.setStockResourceId(model.stockResourceId());
-        dto.setQuantity(model.quantity());
-        dto.setNote(model.note());
-        return dto;
+  public MovementRequestDTO toMovementRequestDTO(MovementRequestModel model) {
+    if (model == null) {
+      return null;
     }
 
-    public MovementStatsResponseModel toMovementStatsResponseModel(MovementStatsDTO dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        return new MovementStatsResponseModel(
-            dto.totalMovements(),
-            dto.totalInflows(),
-            Math.abs(dto.totalOutflows())
-        );
-    }
+    MovementRequestDTO dto = new MovementRequestDTO();
+    dto.setStockResourceId(model.stockResourceId());
+    dto.setQuantity(model.quantity());
+    dto.setNote(model.note());
+    return dto;
+  }
 }

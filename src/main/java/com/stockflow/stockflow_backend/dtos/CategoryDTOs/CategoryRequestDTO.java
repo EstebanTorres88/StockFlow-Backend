@@ -11,5 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryRequestDTO {
     private String name;
-    
+    private String imageUrl;
+
 }

@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.stockflow.stockflow_backend.dtos.StockDTOs.StockStatsDTO;
 import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
 import com.stockflow.stockflow_backend.repositories.StockRepository;
@@ -36,15 +35,7 @@ public class StockService implements IStockService {
     }
 
 
-    @Override
-    public StockStatsDTO getStockStats() {
-        Integer totalProducts = stockRepository.countTotalProducts();
-        Integer lowStockProducts = stockRepository.countLowStockProducts();
-        var inventoryValue = stockRepository.sumInventoryValue();   
-
-        return new StockStatsDTO(totalProducts, lowStockProducts, inventoryValue);
-    }
-
+ 
 
 
 

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseDTO;
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseRequestDTO;
-import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseSummaryDTO;
 import com.stockflow.stockflow_backend.entities.Purchase;
 import com.stockflow.stockflow_backend.mappers.PurchaseMapper;
 import com.stockflow.stockflow_backend.services.PurchaseService.IPurchaseService;
@@ -24,8 +23,8 @@ public class PurchaseFacade implements IPurchaseFacade {
     private PurchaseMapper purchaseMapper;
 
     @Override
-    public Page<PurchaseSummaryDTO> getAll(int page) {
-        return purchaseMapper.toPurchaseSummaryDTOPage(purchaseService.getAll(page));
+    public Page<PurchaseDTO> getAll(int page) {
+        return purchaseMapper.toPurchaseDTOPage(purchaseService.getAll(page));
     }
 
     @Override
