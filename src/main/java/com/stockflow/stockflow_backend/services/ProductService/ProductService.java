@@ -22,7 +22,7 @@ public class ProductService implements IProductService {
 
   @Override
   public List<Product> getAll() {
-    return productRepository.getAll();
+    return productRepository.findAll();
   }
 
   @Override
@@ -70,6 +70,7 @@ public class ProductService implements IProductService {
   @Override
   public void removeProduct(UUID resourceId) {
     Product product = productRepository.findByResourceId(resourceId).orElseThrow(() -> new ProductNotFoundException());
+    product.setActive(false);
     productRepository.removeProduct(product);
   }
 

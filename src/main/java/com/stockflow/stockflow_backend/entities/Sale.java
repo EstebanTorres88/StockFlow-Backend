@@ -32,12 +32,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class Sale {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date" , nullable= false)
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     @Column(name = "resource_id", nullable = false, unique = true, length = 36)
@@ -52,5 +52,5 @@ public class Sale {
 
     @Transient
     private Integer totalProductsAmount;
-    
+
 }

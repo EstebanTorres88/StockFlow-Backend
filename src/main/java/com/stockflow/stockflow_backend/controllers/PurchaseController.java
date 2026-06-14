@@ -13,7 +13,6 @@ import com.stockflow.stockflow_backend.facade.PurchaseFacade.IPurchaseFacade;
 import com.stockflow.stockflow_backend.mappers.PurchaseMapper;
 import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseRequestModel;
 import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseResponseModel;
-import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseSummaryResponseModel;
 
 import jakarta.validation.Valid;
 
@@ -29,8 +28,8 @@ public class PurchaseController {
     private PurchaseMapper purchaseMapper;
 
     @GetMapping
-    public ResponseEntity<Page<PurchaseSummaryResponseModel>> findAll(@RequestParam(defaultValue = "0" ) int page) {
-        return ResponseEntity.ok( purchaseMapper.toPurchaseSummaryResponseModelPage(purchaseFacade.getAll(page)));
+    public ResponseEntity<Page<PurchaseResponseModel>> findAll(@RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(purchaseMapper.toPurchaseResponseModelPage(purchaseFacade.getAll(page)));
     }
 
     @PostMapping
@@ -40,15 +39,14 @@ public class PurchaseController {
 
         PurchaseDTO purchaseDto = purchaseFacade.addPurchase(dto);
 
-        return ResponseEntity.ok( purchaseMapper.toPurchaseResponseModel(purchaseDto));
+        return ResponseEntity.ok(purchaseMapper.toPurchaseResponseModel(purchaseDto));
     }
 
     @GetMapping("/{resourceId}")
-    public ResponseEntity<PurchaseResponseModel> findById( @PathVariable("resourceId") UUID resourceId) {
+    public ResponseEntity<PurchaseResponseModel> findById(@PathVariable("resourceId") UUID resourceId) {
         PurchaseDTO purchaseDto = purchaseFacade.getByResourceId(resourceId);
 
         return ResponseEntity.ok(purchaseMapper.toPurchaseResponseModel(purchaseDto));
     }
 
-   
 }

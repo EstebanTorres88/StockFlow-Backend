@@ -19,7 +19,7 @@ public class ProductMapper {
     if (product == null) {
       return null;
     }
-    CategoryDTO categoryDTO = new CategoryDTO(product.getCategory().getName(), product.getCategory().getResourceId(), product.getCategory().getImageURL());
+    CategoryDTO categoryDTO = new CategoryDTO(product.getCategory().getName(), product.getCategory().getResourceId(), product.getCategory().getImageURL(), product.getCategory().getProductCount());
 
     return new ProductDTO(product.getName(), product.getDescription(), product.getPrice(), product.getResourceId(), categoryDTO, product.getImageURL());
   } 
@@ -39,7 +39,7 @@ public class ProductMapper {
       return null;
     }
 
-    CategoryResponseModel categoryResponseModel = new CategoryResponseModel(productDto.categoryDTO().name(), productDto.categoryDTO().resourceId(), productDto.categoryDTO().imageUrl());
+    CategoryResponseModel categoryResponseModel = new CategoryResponseModel(productDto.categoryDTO().name(), productDto.categoryDTO().resourceId(), productDto.categoryDTO().imageUrl(), productDto.categoryDTO().productCount());
 
     return new ProductResponseModel(productDto.name(), productDto.description(), productDto.price(), productDto.resourceId(), categoryResponseModel, productDto.imageURL());
   }

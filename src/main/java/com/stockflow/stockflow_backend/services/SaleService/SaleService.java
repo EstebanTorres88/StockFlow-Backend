@@ -79,7 +79,6 @@ public class SaleService implements ISaleService {
 
         calculateSaleTotal(sale);
         calculateSaleProductsAmount(sale);
-        sale.getSaleDetails().forEach(saleDetail -> calculateDetailSubTotal(saleDetail));
 
         return saleRepository.addSale(sale);
         
@@ -93,7 +92,6 @@ public class SaleService implements ISaleService {
 
         calculateSaleProductsAmount(sale);
         calculateSaleTotal(sale);
-        sale.getSaleDetails().forEach(saleDetail -> calculateDetailSubTotal(saleDetail));
         
         
         return sale;
@@ -120,9 +118,5 @@ public class SaleService implements ISaleService {
     }
 
 
-    private void calculateDetailSubTotal(SaleDetail saleDetail){
-        BigDecimal saleSubTotal = saleDetail.getUnitPrice().multiply(BigDecimal.valueOf(saleDetail.getQuantity()));
-        saleDetail.setSubtotal(saleSubTotal);
-
-    }
+  
 }

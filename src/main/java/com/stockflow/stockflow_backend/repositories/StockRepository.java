@@ -15,8 +15,10 @@ import java.util.UUID;
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
    
+    @Query("SELECT stock FROM Stock stock WHERE stock.product.active = true")
      Page<Stock> findAll(Pageable pageable);
     
+    @Query("SELECT stock FROM Stock stock WHERE stock.resourceId = :resourceId AND stock.product.active = true")
     Optional<Stock> findByResourceId(UUID resourceId);
 
 }
