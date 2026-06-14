@@ -80,7 +80,6 @@ public class PurchaseService implements IPurchaseService {
 
         calculatePurchaseTotal(purchase);
         calculatePurchaseProductsAmount(purchase);
-        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
 
         return purchaseRepository.addPurchase(purchase);
         
@@ -94,7 +93,6 @@ public class PurchaseService implements IPurchaseService {
 
         calculatePurchaseProductsAmount(purchase);
         calculatePurchaseTotal(purchase);
-        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
         
         
         return purchase;
@@ -127,12 +125,7 @@ public class PurchaseService implements IPurchaseService {
     }
 
 
-    private void calculateDetailSubTotal(PurchaseDetail purchaseDetail){
-        BigDecimal purchaseSubTotal = purchaseDetail.getUnitPrice().multiply(BigDecimal.valueOf(purchaseDetail.getQuantity()));
-        purchaseDetail.setSubtotal(purchaseSubTotal);
-
-    }
-
+  
 
  
 }

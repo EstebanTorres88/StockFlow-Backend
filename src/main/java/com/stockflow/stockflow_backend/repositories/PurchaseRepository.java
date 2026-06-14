@@ -24,8 +24,6 @@ public interface PurchaseRepository extends JpaRepository<Purchase, Long> {
 
     @EntityGraph(attributePaths = {
         "purchaseDetails",
-        "purchaseDetails.stock",
-        "purchaseDetails.stock.product",
     })
     Optional<Purchase> findByResourceId(UUID resourceId);
 

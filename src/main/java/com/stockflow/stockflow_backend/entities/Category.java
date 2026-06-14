@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.Transient;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,14 +23,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "categories")
 
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Category {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +44,14 @@ public class Category {
     @Column(name = "image_url", length = 500)
     private String imageURL;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
-    
+
+    @Column(name = "active")
+    @Builder.Default
+    private boolean active = true;
+
+    @Transient
+    private Long productCount;
+
 }

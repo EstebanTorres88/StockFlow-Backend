@@ -28,19 +28,16 @@ public class StockController {
     @Autowired
     private StockMapper stockMapper;
 
-
     @GetMapping
-    public ResponseEntity<Page<StockResponseModel>> getAll(@RequestParam(defaultValue = "0") int page){
+    public ResponseEntity<Page<StockResponseModel>> getAll(@RequestParam(defaultValue = "0") int page) {
         Page<StockDTO> stockDtoPage = stockFacade.getAll(page);
 
         return ResponseEntity.ok(stockMapper.toStockResponseModelPage(stockDtoPage));
     }
 
     @GetMapping(path = "/{resourceId}")
-    public ResponseEntity<StockResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId){
+    public ResponseEntity<StockResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId) {
         return ResponseEntity.ok(stockMapper.toStockResponseModel(stockFacade.findByResourceId(resourceId)));
     }
 
-
-   
 }

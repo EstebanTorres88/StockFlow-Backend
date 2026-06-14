@@ -22,9 +22,6 @@ public interface SaleRepository extends JpaRepository<Sale, Long>{
   
     @EntityGraph(attributePaths = {
         "saleDetails",
-        "saleDetails.stock",
-        "saleDetails.stock.product",
     })
-
     Optional<Sale> findByResourceId(UUID resourceId);
 }

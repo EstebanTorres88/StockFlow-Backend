@@ -4,10 +4,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record MovementDTO(
-    Integer quantity,
-    String note,
-    LocalDateTime createdAt,
-    UUID resourceId,
-    UUID stockResourceId
-) {
+        Integer quantity,
+        String note,
+        LocalDateTime createdAt,
+        UUID resourceId,
+        UUID stockResourceId) {
 }
