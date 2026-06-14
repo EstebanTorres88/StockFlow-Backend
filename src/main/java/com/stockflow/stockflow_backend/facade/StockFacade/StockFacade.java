@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.StockDTOs.StockDTO;
-import com.stockflow.stockflow_backend.dtos.StockDTOs.StockStatsDTO;
 import com.stockflow.stockflow_backend.entities.Stock;
 import com.stockflow.stockflow_backend.mappers.StockMapper;
 import com.stockflow.stockflow_backend.services.StockService.IStockService;
@@ -34,9 +33,6 @@ public class StockFacade implements IStockFacade{
         return stockMapper.toStockDTO(stockService.findByResourceId(resourceId));
     }
 
-    @Override
-    public StockStatsDTO getStockStats() {
-        return stockService.getStockStats();
-    }
+  
 
 }

@@ -21,7 +21,7 @@ public class CategoryMapper {
             return null;
         }
 
-        return new CategoryDTO(category.getName(), category.getResourceId());
+        return new CategoryDTO(category.getName(), category.getResourceId(), category.getImageURL(), category.getProductCount());
     }
 
 
@@ -45,7 +45,7 @@ public class CategoryMapper {
 
         }
 
-        return new CategoryResponseModel(categoryDTO.name(), categoryDTO.resourceId());
+        return new CategoryResponseModel(categoryDTO.name(), categoryDTO.resourceId(), categoryDTO.imageUrl(), categoryDTO.productCount());
     }
 
 
@@ -69,6 +69,7 @@ public class CategoryMapper {
 
         CategoryRequestDTO categoryRequestDTO = new CategoryRequestDTO();
         categoryRequestDTO.setName(categoryRequestModel.name());
+        categoryRequestDTO.setImageUrl(categoryRequestModel.imageURL());
 
         return categoryRequestDTO;
 

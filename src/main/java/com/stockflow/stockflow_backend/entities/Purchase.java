@@ -1,4 +1,5 @@
 package com.stockflow.stockflow_backend.entities;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 

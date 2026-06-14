@@ -16,7 +16,6 @@ import com.stockflow.stockflow_backend.dtos.StockDTOs.StockDTO;
 import com.stockflow.stockflow_backend.facade.StockFacade.IStockFacade;
 import com.stockflow.stockflow_backend.mappers.StockMapper;
 import com.stockflow.stockflow_backend.models.StockModels.StockResponseModel;
-import com.stockflow.stockflow_backend.models.StockModels.StockStatsResponseModel;
 
 @RestController
 @CrossOrigin("*")
@@ -29,22 +28,16 @@ public class StockController {
     @Autowired
     private StockMapper stockMapper;
 
-
     @GetMapping
-    public ResponseEntity<Page<StockResponseModel>> getAll(@RequestParam(defaultValue = "0") int page){
+    public ResponseEntity<Page<StockResponseModel>> getAll(@RequestParam(defaultValue = "0") int page) {
         Page<StockDTO> stockDtoPage = stockFacade.getAll(page);
 
         return ResponseEntity.ok(stockMapper.toStockResponseModelPage(stockDtoPage));
     }
 
     @GetMapping(path = "/{resourceId}")
-    public ResponseEntity<StockResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId){
+    public ResponseEntity<StockResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId) {
         return ResponseEntity.ok(stockMapper.toStockResponseModel(stockFacade.findByResourceId(resourceId)));
     }
 
-
-    @GetMapping(path = "/stats")
-    public ResponseEntity<StockStatsResponseModel> getStockStats(){
-        return ResponseEntity.ok(stockMapper.toStockStatsResponseModel(stockFacade.getStockStats()));
-    }
 }
