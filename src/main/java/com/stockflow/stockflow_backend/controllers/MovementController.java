@@ -21,7 +21,7 @@ import com.stockflow.stockflow_backend.models.MovementModels.MovementResponseMod
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("https://stock-flow-taupe.vercel.app")
 @RequestMapping("/movements")
 public class MovementController {
 

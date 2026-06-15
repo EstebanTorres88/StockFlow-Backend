@@ -25,7 +25,7 @@ import com.stockflow.stockflow_backend.models.CategoryModels.CategoryResponseMod
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("https://stock-flow-taupe.vercel.app")
 @RequestMapping("/categories")
 public class CategoryController {
 

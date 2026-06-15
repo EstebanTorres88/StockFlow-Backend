@@ -26,7 +26,7 @@ import com.stockflow.stockflow_backend.models.SaleModels.SaleResponseModel;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("https://stock-flow-taupe.vercel.app")
 @RequestMapping("/sales")
 public class SaleController {
     @Autowired
