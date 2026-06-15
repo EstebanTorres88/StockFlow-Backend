@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@CrossOrigin("https://stock-flow-taupe.vercel.app/")
+@CrossOrigin("https://stock-flow-taupe.vercel.app")
 @RequestMapping("/products")
 
 public class ProductController {

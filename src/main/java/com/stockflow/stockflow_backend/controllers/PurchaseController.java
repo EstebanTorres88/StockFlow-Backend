@@ -17,7 +17,7 @@ import com.stockflow.stockflow_backend.models.PurchaseModels.PurchaseResponseMod
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("https://stock-flow-taupe.vercel.app/")
+@CrossOrigin("https://stock-flow-taupe.vercel.app")
 @RequestMapping("/purchases")
 public class PurchaseController {
 
