@@ -18,7 +18,11 @@ import com.stockflow.stockflow_backend.mappers.StockMapper;
 import com.stockflow.stockflow_backend.models.StockModels.StockResponseModel;
 
 @RestController
-@CrossOrigin("https://stock-flow-taupe.vercel.app")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "https://stock-flow-taupe.vercel.app"
+  })
 @RequestMapping("/stock")
 public class StockController {
 
