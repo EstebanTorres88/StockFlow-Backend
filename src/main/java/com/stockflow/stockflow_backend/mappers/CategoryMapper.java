@@ -32,7 +32,7 @@ public class CategoryMapper {
         }
 
         return categories.stream().
-        map(this:: toCategoryDTO).toList();
+        map(this:: toCategoryDTO).toList().reversed();
 
     }
 
@@ -57,7 +57,7 @@ public class CategoryMapper {
         }
 
         return categories.stream().
-        map(this::toCategoryResponseModel).toList();
+        map(this::toCategoryResponseModel).toList().reversed();
 
     }
 
