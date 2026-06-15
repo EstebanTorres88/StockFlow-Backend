@@ -43,6 +43,9 @@ public class CategoryService implements ICategoryService {
         Category category = categoryRepository.findByResourceId(resourceId).orElseThrow(()-> new CategoryNotFoundException());
         category.setName(categoryRequestDTO.getName());
         category.setImageURL(categoryRequestDTO.getImageUrl());
+
+        calculateProductCount(category);
+
         return categoryRepository.updateCategory(category);
     }
 
