@@ -11,8 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.MovementDTOs.MovementRequestDTO;
+import com.stockflow.stockflow_backend.entities.History;
 import com.stockflow.stockflow_backend.entities.Movement;
+import com.stockflow.stockflow_backend.entities.Product;
 import com.stockflow.stockflow_backend.entities.Stock;
+import com.stockflow.stockflow_backend.enums.MovementType;
+import com.stockflow.stockflow_backend.repositories.HistoryRepository;
 import com.stockflow.stockflow_backend.repositories.MovementRepository;
 import com.stockflow.stockflow_backend.repositories.StockRepository;
 import com.stockflow.stockflow_backend.services.StockService.IStockService;
@@ -30,6 +34,9 @@ public class MovementService implements IMovementService {
 
   @Autowired
   private StockRepository stockRepository;
+
+  @Autowired
+  private HistoryRepository historyRepository;
 
   private static final int PAGE_SIZE = 5;
 
@@ -61,6 +68,16 @@ public class MovementService implements IMovementService {
         .resourceId(UUID.randomUUID())
         .build();
 
+    Product product = stock.getProduct();
+
+    History record = History.builder()
+      .movementType(MovementType.MOVEMENT)
+      .date(LocalDateTime.now())
+      .product(product)
+      .resourceId(UUID.randomUUID())
+      .build();
+
+    historyRepository.addRecord(record);
     return movementRepository.save(movement);
   }
 }

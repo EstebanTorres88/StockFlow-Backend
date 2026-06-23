@@ -1,6 +1,7 @@
 package com.stockflow.stockflow_backend.services.SaleService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -13,11 +14,15 @@ import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.SaleDTOs.SaleRequestDTO;
 import com.stockflow.stockflow_backend.dtos.SaleDetailDTOs.SaleDetailRequestDTO;
+import com.stockflow.stockflow_backend.entities.History;
+import com.stockflow.stockflow_backend.entities.Product;
 import com.stockflow.stockflow_backend.entities.Sale;
 import com.stockflow.stockflow_backend.entities.SaleDetail;
 import com.stockflow.stockflow_backend.entities.Stock;
+import com.stockflow.stockflow_backend.enums.MovementType;
 import com.stockflow.stockflow_backend.exceptions.SaleNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
+import com.stockflow.stockflow_backend.repositories.HistoryRepository;
 import com.stockflow.stockflow_backend.repositories.SaleRepository;
 import com.stockflow.stockflow_backend.repositories.StockRepository;
 
@@ -29,6 +34,9 @@ public class SaleService implements ISaleService {
 
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private HistoryRepository historyRepository;
 
 
     private static final int PAGE_SIZE = 10;
@@ -73,13 +81,23 @@ public class SaleService implements ISaleService {
             .resourceId(UUID.randomUUID())
             .build();
 
+            Product product = stock.getProduct();
+
+            History record = History.builder()
+            .movementType(MovementType.SALE)
+            .date(LocalDateTime.now())
+            .product(product)
+            .resourceId(UUID.randomUUID())
+            .build();
+
+            historyRepository.addRecord(record);
+
             sale.getSaleDetails().add(saleDetail);
         }
 
 
         calculateSaleTotal(sale);
         calculateSaleProductsAmount(sale);
-        sale.getSaleDetails().forEach(saleDetail -> calculateDetailSubTotal(saleDetail));
 
         return saleRepository.addSale(sale);
         
@@ -93,7 +111,6 @@ public class SaleService implements ISaleService {
 
         calculateSaleProductsAmount(sale);
         calculateSaleTotal(sale);
-        sale.getSaleDetails().forEach(saleDetail -> calculateDetailSubTotal(saleDetail));
         
         
         return sale;
@@ -120,9 +137,5 @@ public class SaleService implements ISaleService {
     }
 
 
-    private void calculateDetailSubTotal(SaleDetail saleDetail){
-        BigDecimal saleSubTotal = saleDetail.getUnitPrice().multiply(BigDecimal.valueOf(saleDetail.getQuantity()));
-        saleDetail.setSubtotal(saleSubTotal);
-
-    }
+  
 }

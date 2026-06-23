@@ -22,23 +22,26 @@ import com.stockflow.stockflow_backend.facade.SaleFacade.ISaleFacade;
 import com.stockflow.stockflow_backend.mappers.SaleMapper;
 import com.stockflow.stockflow_backend.models.SaleModels.SaleRequestModel;
 import com.stockflow.stockflow_backend.models.SaleModels.SaleResponseModel;
-import com.stockflow.stockflow_backend.models.SaleModels.SaleSummaryResponseModel;
 
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "https://stock-flow-taupe.vercel.app"
+  })
 @RequestMapping("/sales")
 public class SaleController {
     @Autowired
     private ISaleFacade saleFacade;
-  
+
     @Autowired
     private SaleMapper saleMapper;
 
     @GetMapping
-    public ResponseEntity<Page<SaleSummaryResponseModel>> findAll(@RequestParam(defaultValue = "0" ) int page) {
-        return ResponseEntity.ok( saleMapper.toSaleSummaryResponseModelPage(saleFacade.getAll(page)));
+    public ResponseEntity<Page<SaleResponseModel>> findAll(@RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(saleMapper.toSaleResponseModelPage(saleFacade.getAll(page)));
     }
 
     @PostMapping
@@ -48,11 +51,11 @@ public class SaleController {
 
         SaleDTO saleDto = saleFacade.addSale(dto);
 
-        return ResponseEntity.ok( saleMapper.toSaleResponseModel(saleDto));
+        return ResponseEntity.ok(saleMapper.toSaleResponseModel(saleDto));
     }
 
     @GetMapping("/{resourceId}")
-    public ResponseEntity<SaleResponseModel> findById( @PathVariable("resourceId") UUID resourceId) {
+    public ResponseEntity<SaleResponseModel> findById(@PathVariable("resourceId") UUID resourceId) {
         SaleDTO saleDto = saleFacade.getByResourceId(resourceId);
 
         return ResponseEntity.ok(saleMapper.toSaleResponseModel(saleDto));

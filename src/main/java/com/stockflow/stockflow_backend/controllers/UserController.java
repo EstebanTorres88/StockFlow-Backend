@@ -26,13 +26,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = {
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "https://stock-flow-taupe.vercel.app"
+  })
 @RequestMapping("/users")
 public class UserController {
 
   @Autowired
   private IUserFacade userFacade;
-  
+
   @Autowired
   private UserMapper userMapper;
 
@@ -48,7 +52,7 @@ public class UserController {
 
     return ResponseEntity.ok(userMapper.toUserResponseModel(userDto));
   }
-  
+
   @GetMapping(path = "/{resourceId}")
   public ResponseEntity<UserResponseModel> findByResourceId(@PathVariable("resourceId") UUID resourceId) {
     UserDTO userDto = userFacade.getByResourceId(resourceId);
@@ -56,10 +60,11 @@ public class UserController {
   }
 
   @PutMapping(path = "/{resourceId}")
-  public ResponseEntity<UserResponseModel> update(@PathVariable("resourceId") UUID resourceId, @RequestBody @Valid UserRequestModel userRequestModel) {
+  public ResponseEntity<UserResponseModel> update(@PathVariable("resourceId") UUID resourceId,
+      @RequestBody @Valid UserRequestModel userRequestModel) {
     UserRequestDTO dto = userMapper.toUserRequestDto(userRequestModel);
     UserDTO userDto = userFacade.updateUser(resourceId, dto);
-    
+
     return ResponseEntity.ok(userMapper.toUserResponseModel(userDto));
   }
 

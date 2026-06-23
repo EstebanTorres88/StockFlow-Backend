@@ -1,6 +1,7 @@
 package com.stockflow.stockflow_backend.services.PurchaseService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -13,11 +14,15 @@ import org.springframework.stereotype.Service;
 
 import com.stockflow.stockflow_backend.dtos.PurchaseDTOs.PurchaseRequestDTO;
 import com.stockflow.stockflow_backend.dtos.PurchaseDetailDTOs.PurchaseDetailRequestDTO;
+import com.stockflow.stockflow_backend.entities.History;
+import com.stockflow.stockflow_backend.entities.Product;
 import com.stockflow.stockflow_backend.entities.Purchase;
 import com.stockflow.stockflow_backend.entities.PurchaseDetail;
 import com.stockflow.stockflow_backend.entities.Stock;
+import com.stockflow.stockflow_backend.enums.MovementType;
 import com.stockflow.stockflow_backend.exceptions.PurchaseNotFoundException;
 import com.stockflow.stockflow_backend.exceptions.StockNotFoundException;
+import com.stockflow.stockflow_backend.repositories.HistoryRepository;
 import com.stockflow.stockflow_backend.repositories.PurchaseRepository;
 import com.stockflow.stockflow_backend.repositories.StockRepository;
 
@@ -29,7 +34,9 @@ public class PurchaseService implements IPurchaseService {
 
     @Autowired
     private StockRepository stockRepository;
-
+    
+    @Autowired
+    private HistoryRepository historyRepository;
 
     private static final int PAGE_SIZE = 10;
 
@@ -74,13 +81,23 @@ public class PurchaseService implements IPurchaseService {
             .resourceId(UUID.randomUUID())
             .build();
 
+            Product product = stock.getProduct();
+
+            History record = History.builder()
+            .movementType(MovementType.PURCHASE)
+            .date(LocalDateTime.now())
+            .product(product)
+            .resourceId(UUID.randomUUID())
+            .build();
+
+            historyRepository.addRecord(record);
+
             purchase.getPurchaseDetails().add(purchaseDetail);
         }
 
 
         calculatePurchaseTotal(purchase);
         calculatePurchaseProductsAmount(purchase);
-        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
 
         return purchaseRepository.addPurchase(purchase);
         
@@ -94,7 +111,6 @@ public class PurchaseService implements IPurchaseService {
 
         calculatePurchaseProductsAmount(purchase);
         calculatePurchaseTotal(purchase);
-        purchase.getPurchaseDetails().forEach(purchaseDetail -> calculateDetailSubTotal(purchaseDetail));
         
         
         return purchase;
@@ -127,12 +143,7 @@ public class PurchaseService implements IPurchaseService {
     }
 
 
-    private void calculateDetailSubTotal(PurchaseDetail purchaseDetail){
-        BigDecimal purchaseSubTotal = purchaseDetail.getUnitPrice().multiply(BigDecimal.valueOf(purchaseDetail.getQuantity()));
-        purchaseDetail.setSubtotal(purchaseSubTotal);
-
-    }
-
+  
 
  
 }

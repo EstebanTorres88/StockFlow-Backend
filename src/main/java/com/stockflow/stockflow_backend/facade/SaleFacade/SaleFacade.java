@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.stockflow.stockflow_backend.dtos.SaleDTOs.SaleDTO;
 import com.stockflow.stockflow_backend.dtos.SaleDTOs.SaleRequestDTO;
-import com.stockflow.stockflow_backend.dtos.SaleDTOs.SaleSummaryDTO;
 import com.stockflow.stockflow_backend.entities.Sale;
 import com.stockflow.stockflow_backend.mappers.SaleMapper;
 import com.stockflow.stockflow_backend.services.SaleService.ISaleService;
@@ -25,8 +24,8 @@ public class SaleFacade implements ISaleFacade {
     private SaleMapper saleMapper;
 
     @Override
-    public Page<SaleSummaryDTO> getAll(int page) {
-        return saleMapper.toSaleSummaryDTOPage(saleService.getAll(page));
+    public Page<SaleDTO> getAll(int page) {
+        return saleMapper.toSaleDTOPage(saleService.getAll(page));
     }
 
     @Override
