@@ -47,7 +47,6 @@ public class StockMapper {
         ProductResponseModel productResponseModel = productMapper.toProductResponseModel(stockDTO.productDTO());
 
         return new StockResponseModel(stockDTO.quantity(),stockDTO.minimumQuantity(),stockDTO.resourceId(), productResponseModel);
-
     }
 
 

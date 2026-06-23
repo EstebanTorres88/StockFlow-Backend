@@ -57,7 +57,6 @@ public class CategoryController {
         CategoryDTO categoryDTO = categoryFacade.addCategory(dto);
 
         return ResponseEntity.ok(categoryMapper.toCategoryResponseModel(categoryDTO));
-
     }
 
     @PutMapping(path = "/{resourceId}")

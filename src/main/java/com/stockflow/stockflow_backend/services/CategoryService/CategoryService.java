@@ -11,13 +11,11 @@ import com.stockflow.stockflow_backend.entities.Category;
 import com.stockflow.stockflow_backend.exceptions.CategoryNotFoundException;
 import com.stockflow.stockflow_backend.repositories.CategoryRepository;
 
-
 @Service
 public class CategoryService implements ICategoryService {
 
      @Autowired
     private CategoryRepository categoryRepository;
-
 
     @Override
     public List<Category> getAll() {
@@ -34,6 +32,7 @@ public class CategoryService implements ICategoryService {
         .resourceId(UUID.randomUUID())
         .imageURL(categoryRequestDTO.getImageUrl())
         .build();
+
         return categoryRepository.addCategory(category);
     }
 
