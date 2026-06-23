@@ -9,5 +9,4 @@ public record MovementResponseModel(
     LocalDateTime createdAt,
     UUID resourceId,
     UUID stockResourceId
-) {
-}
+) {}
